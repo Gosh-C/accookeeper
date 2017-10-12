@@ -3,8 +3,8 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
+
     defaultConfig {
-        applicationId "gosh.com.accookeeper"
         minSdkVersion 24
         targetSdkVersion 25
         versionCode 1
@@ -12,10 +12,74 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
+
+    flavorDimensions 'platform', 'environment'
+
     buildTypes {
-        release {
+        debug {
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.release
+        }
+        release {
+            initWith debug
+            debuggable false
+            jniDebuggable false
+            minifyEnabled false
+            zipAlignEnabled true
+        }
+    }
+
+    productFlavors{
+        // Platform
+        gosh_app{
+            dimension 'platform'
+            applicationId 'gosh.com.accookeeper'
+        }
+
+        fantastic{
+            dimension 'platform'
+            applicationId 'com.fantastic.dream'
+        }
+
+        // Environment
+        uat{
+            dimension 'environment'
+            versionName defaultConfig.versionName + "_uat-" + defaultConfig.versionCode
+        }
+
+        production{
+            dimension 'environment'
+            versionName defaultConfig.versionName
+        }
+    }
+
+    // Filter build variant for some combinations
+    variantFilter { variant ->
+        def dim = variant.flavors.collectEntries {
+            [(it.productFlavor.dimension) : it.productFlavor.name]
+        }
+
+        if (variant.buildType.name.equals('debug')) {
+            if (dim.environment == 'production') {
+                // Ignore debug build for production
+                variant.setIgnore(true);
+            }
+        } else if (variant.buildType.name.equals('release')) {
+            if (dim.environment == 'dev' ||
+                    dim.environment == 'uat') {
+                // Ignore release build for dev and uat
+                variant.setIgnore(true);
+            }
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(
+                    output.outputFile.parent,
+                    output.outputFile.name.replace(".apk", "_${variant.versionName}.apk"))
         }
     }
 }
