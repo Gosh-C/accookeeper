@@ -1,0 +1,15 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
+    package="gosh.com.accookeepersdk">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <application android:allowBackup="true"
+        android:supportsRtl="true">
+        <activity android:name="gosh.com.accookeepersdk.activity.SettingsActivity" android:screenOrientation="portrait"/>
+        <activity android:name="gosh.com.accookeepersdk.activity.SheetActivity" android:screenOrientation="portrait"/>
+    </application>
+
+</manifest>

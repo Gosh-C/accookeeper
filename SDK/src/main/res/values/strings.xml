@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name"> </string> <!-- Overrided by app side -->
+
+    <!-- Setting Activity -->
+    <string name="app_root_folder">Google Drive Root Folder</string>
+    <string name="app_root_folder_hint">Please choose or create app. root folder</string>
+
+    <string name="app_config_file">Application Config File</string>
+    <string name="app_config_file_hint">Please choose an app config file</string>
+
+
+    <string name="save">Save</string>
+    <string name="select">Select</string>
+</resources>
