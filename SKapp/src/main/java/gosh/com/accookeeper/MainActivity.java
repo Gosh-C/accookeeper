@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,12 +15,11 @@ import android.view.View;
 
 import gosh.com.accookeepersdk.AccookeeperSDK;
 import gosh.com.accookeepersdk.MakeRequestTask;
-import gosh.com.accookeepersdk.activity.BaseSDKActivity;
 import gosh.com.accookeepersdk.activity.SettingsActivity;
 import gosh.com.accookeepersdk.googledrive.GoogleDriveAPI;
 
 
-public class MainActivity extends BaseSDKActivity {
+public class MainActivity extends AppCompatActivity{
     private final static String TAG = MainActivity.class.getName();
     private final static int REQUEST_CODE_CAPTURE_IMAGE = 12;
 
