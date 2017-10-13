@@ -33,7 +33,7 @@ android {
 
     productFlavors{
         // Platform
-        gosh_app{
+        gosh{
             dimension 'platform'
             applicationId 'gosh.com.accookeeper'
         }
