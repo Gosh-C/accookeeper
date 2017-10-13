@@ -49,6 +49,22 @@ public class PrefUtils {
         return getString(context, PREF_SHEET_CONFIG_JSON, "");
     }
 
+    public static void removeSheetConfigJson(Context context){
+        deleteString(context, PREF_SHEET_CONFIG_JSON);
+    }
+
+    private static void deleteString(Context context, String key){
+        try{
+            SharedPreferences pref = context.getApplicationContext().getSharedPreferences(DRIVE_PREF, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.remove(key);
+            editor.commit();
+        }
+        catch(Exception e){
+            Log.e(TAG, "Delete Error");
+        }
+    }
+
     private static void putString(Context context, String key, String value){
         try{
             SharedPreferences pref = context.getApplicationContext().getSharedPreferences(DRIVE_PREF, Context.MODE_PRIVATE);

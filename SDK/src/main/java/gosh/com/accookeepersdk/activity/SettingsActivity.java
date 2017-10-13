@@ -15,6 +15,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecovera
 
 import gosh.com.accookeepersdk.AccookeeperSDK;
 import gosh.com.accookeepersdk.R;
+import gosh.com.accookeepersdk.SheetsConfig;
 import gosh.com.accookeepersdk.googledrive.GoogleDriveAPI;
 import gosh.com.accookeepersdk.request.AppConfigRequest;
 import gosh.com.accookeepersdk.request.RequestCallback;
@@ -117,7 +118,9 @@ public class SettingsActivity extends AppCompatActivity {
         AppConfigRequest request = new AppConfigRequest(AccookeeperSDK.getInstance().getGoogleAccountCredential(this), this, new RequestCallback() {
             @Override
             public void onFinishedFetchData(String data) {
+                PrefUtils.removeSheetConfigJson(SettingsActivity.this);
                 PrefUtils.putSheetConfigJson(SettingsActivity.this, data);
+                SheetsConfig.resetSheet();
                 Toast.makeText(SettingsActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
             }
 

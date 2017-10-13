@@ -19,4 +19,16 @@
         android:orderInCategory="100"
         android:title="Test Append"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_get_sheet_name"
+        android:orderInCategory="100"
+        android:title="Get All Sheets Name"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_get_sheet_field"
+        android:orderInCategory="100"
+        android:title="Get Sheet Fields"
+        app:showAsAction="never" />
 </menu>

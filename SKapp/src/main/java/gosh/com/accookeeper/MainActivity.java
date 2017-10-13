@@ -9,16 +9,23 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+import com.google.api.client.util.Lists;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import gosh.com.accookeepersdk.AccookeeperSDK;
+import gosh.com.accookeepersdk.SheetsConfig;
 import gosh.com.accookeepersdk.activity.SettingsActivity;
 import gosh.com.accookeepersdk.googledrive.GoogleDriveAPI;
+import gosh.com.accookeepersdk.model.SheetField;
 import gosh.com.accookeepersdk.request.AppendRequest;
 import gosh.com.accookeepersdk.request.RequestCallback;
 import gosh.com.accookeepersdk.utils.PrefUtils;
@@ -62,21 +69,13 @@ public class MainActivity extends AppCompatActivity{
                 return true;
             case R.id.action_sheet:
                 String data = PrefUtils.getSheetConfigJson(this);
-                Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment);
-                if(f instanceof  MainActivityFragment){
-                    MainActivityFragment mf = (MainActivityFragment) f;
-                    mf.setMessage(data);
-                }
+                showMsg(data);
                 return true;
             case R.id.action_append:
                 AppendRequest apRequest = new AppendRequest(AccookeeperSDK.getInstance().getGoogleAccountCredential(this), this, new RequestCallback() {
                     @Override
                     public void onFinishedFetchData(String data) {
-                        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment);
-                        if(f instanceof  MainActivityFragment){
-                            MainActivityFragment mf = (MainActivityFragment) f;
-                            mf.setMessage(data);
-                        }
+                        showMsg(data);
                     }
 
                     @Override
@@ -91,12 +90,29 @@ public class MainActivity extends AppCompatActivity{
                 });
                 apRequest.execute();
                 break;
-        }
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
-        }
-        else if(id == R.id.action_sheet){
+            case R.id.action_get_sheet_name:
+                try {
+                    showMsg(TextUtils.join("\n", SheetsConfig.getSheetName(this)));
+                }
+                catch(Exception e){
+                    SheetsConfig.resetSheet();
+                    Toast.makeText(this, "Invalid Sheet Config File.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.action_get_sheet_field:
+                try {
+                    List<SheetField> fields =  SheetsConfig.getSheetFields(this, "TESTING");
+                    ArrayList<String> s = Lists.newArrayList();
+                    for(SheetField sf : fields){
+                        s.add(sf.getFieldName());
+                    }
+                    showMsg(TextUtils.join("\n", s));
+                }
+                catch(Exception e){
+                    SheetsConfig.resetSheet();
+                    Toast.makeText(this, "Invalid Sheet Config File.", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -114,6 +130,14 @@ public class MainActivity extends AppCompatActivity{
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void showMsg(String msg){
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment);
+        if(f instanceof  MainActivityFragment){
+            MainActivityFragment mf = (MainActivityFragment) f;
+            mf.setMessage(msg);
         }
     }
 }

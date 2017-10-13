@@ -6,7 +6,6 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import gosh.com.accookeepersdk.utils.PrefUtils;
@@ -39,10 +38,9 @@ public class AppendRequest extends RequestBase {
         try {
             String spreadSheetId = PrefUtils.getSheetConfigResourceId(mContext);
             List obj = new ArrayList<Object>();
-            obj.add("A");
-            obj.add("B");
-            obj.add(new Date().toString());
-            obj.add(Boolean.FALSE.toString());
+            obj.add("TESTING FIELD~");
+            obj.add("MY TYPE");
+            obj.add(Boolean.TRUE);
             String updatedRange = appendRow(spreadSheetId, "TESTING", obj);
             return updatedRange;
         } catch (Exception e) {
