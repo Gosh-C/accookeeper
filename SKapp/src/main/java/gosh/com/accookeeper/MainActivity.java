@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+
 import gosh.com.accookeepersdk.AccookeeperSDK;
 import gosh.com.accookeepersdk.activity.SettingsActivity;
 import gosh.com.accookeepersdk.googledrive.GoogleDriveAPI;
@@ -24,7 +26,8 @@ import gosh.com.accookeepersdk.request.RequestCallback;
 
 public class MainActivity extends AppCompatActivity{
     private final static String TAG = MainActivity.class.getName();
-    private final static int REQUEST_CODE_CAPTURE_IMAGE = 12;
+    private final static int REQUEST_CODE_CAPTURE_IMAGE = 1001;
+    private final static int REQUEST_CODE_AUTHORIZATION = 1002;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,16 +76,13 @@ public class MainActivity extends AppCompatActivity{
                     public void onError(String error) {
                         Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
                     }
+
+                    @Override
+                    public void onUserRecoverableAuthIOException(UserRecoverableAuthIOException e) {
+                        startActivityForResult(e.getIntent(), REQUEST_CODE_AUTHORIZATION);
+                    }
                 });
                 request.execute();
-
-//            MakeRequestTask task = new MakeRequestTask(AccookeeperSDK.getInstance().getGoogleAccountCredential(this), this, new MakeRequestTask.ABC() {
-//                @Override
-//                public void onFinish(String msg) {
-//
-//                }
-//            });
-//            task.execute();
                 return true;
             case R.id.action_append:
                 AppendRequest apRequest = new AppendRequest(AccookeeperSDK.getInstance().getGoogleAccountCredential(this), this, new RequestCallback() {
@@ -98,6 +98,11 @@ public class MainActivity extends AppCompatActivity{
                     @Override
                     public void onError(String error) {
                         Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onUserRecoverableAuthIOException(UserRecoverableAuthIOException e) {
+                        startActivityForResult(e.getIntent(), REQUEST_CODE_AUTHORIZATION);
                     }
                 });
                 apRequest.execute();
@@ -120,6 +125,8 @@ public class MainActivity extends AppCompatActivity{
                     Bitmap bitmapToSave = (Bitmap) data.getExtras().get("data");
                     GoogleDriveAPI.getInstance().uploadImageToDrive(this, bitmapToSave);
                 }
+                break;
+            case REQUEST_CODE_AUTHORIZATION:
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
