@@ -8,9 +8,11 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.sheets.v4.Sheets;
+import com.google.api.services.sheets.v4.model.AppendValuesResponse;
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import com.google.common.collect.Lists;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,5 +51,19 @@ public abstract class RequestBase extends AsyncTask<Void, Void, String>{
     protected List<List<Object>> getDataInSheet(String spreadSheetId, String range) throws IOException{
         ValueRange response = this.mService.spreadsheets().values().get(spreadSheetId, range).execute();
         return response.getValues();
+    }
+
+    protected String appendRow(String spreadSheetId, String sheetName, List<Object> rowData) throws  IOException{
+        String range = sheetName+"!A:A";
+        ValueRange r = new ValueRange();
+        List l = Lists.newArrayList();
+        l.add(rowData);
+        r.setValues(l);
+        AppendValuesResponse response = mService.spreadsheets().values()
+                .append(spreadSheetId, range, r).setValueInputOption("USER_ENTERED")
+                .execute();
+        String updated = response.getUpdates().getUpdatedRange();
+        return updated;
+
     }
 }

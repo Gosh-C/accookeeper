@@ -18,6 +18,7 @@ import gosh.com.accookeepersdk.AccookeeperSDK;
 import gosh.com.accookeepersdk.activity.SettingsActivity;
 import gosh.com.accookeepersdk.googledrive.GoogleDriveAPI;
 import gosh.com.accookeepersdk.request.AppConfigRequest;
+import gosh.com.accookeepersdk.request.AppendRequest;
 import gosh.com.accookeepersdk.request.RequestCallback;
 
 
@@ -45,35 +46,35 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_testing, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
-        }
-        else if(id == R.id.action_sheet){
-            //startActivity(new Intent(this, SheetActivity.class));
-            AppConfigRequest request = new AppConfigRequest(AccookeeperSDK.getInstance().getGoogleAccountCredential(this), this, new RequestCallback() {
-                @Override
-                public void onFinishedFetchData(String data) {
-                    Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment);
-                    if(f instanceof  MainActivityFragment){
-                        MainActivityFragment mf = (MainActivityFragment) f;
-                        mf.setMessage(data);
+        switch(id){
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            case R.id.action_sheet:
+                //startActivity(new Intent(this, SheetActivity.class));
+                AppConfigRequest request = new AppConfigRequest(AccookeeperSDK.getInstance().getGoogleAccountCredential(this), this, new RequestCallback() {
+                    @Override
+                    public void onFinishedFetchData(String data) {
+                        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment);
+                        if(f instanceof  MainActivityFragment){
+                            MainActivityFragment mf = (MainActivityFragment) f;
+                            mf.setMessage(data);
+                        }
                     }
-                }
 
-                @Override
-                public void onError(String error) {
-                    Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
-                }
-            });
-            request.execute();
+                    @Override
+                    public void onError(String error) {
+                        Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                request.execute();
 
 //            MakeRequestTask task = new MakeRequestTask(AccookeeperSDK.getInstance().getGoogleAccountCredential(this), this, new MakeRequestTask.ABC() {
 //                @Override
@@ -82,7 +83,31 @@ public class MainActivity extends AppCompatActivity{
 //                }
 //            });
 //            task.execute();
+                return true;
+            case R.id.action_append:
+                AppendRequest apRequest = new AppendRequest(AccookeeperSDK.getInstance().getGoogleAccountCredential(this), this, new RequestCallback() {
+                    @Override
+                    public void onFinishedFetchData(String data) {
+                        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment);
+                        if(f instanceof  MainActivityFragment){
+                            MainActivityFragment mf = (MainActivityFragment) f;
+                            mf.setMessage(data);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                apRequest.execute();
+                break;
+        }
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
+        }
+        else if(id == R.id.action_sheet){
         }
         return super.onOptionsItemSelected(item);
     }
