@@ -3,6 +3,7 @@ package gosh.com.accookeepersdk.request;
 import android.content.Context;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,10 +60,16 @@ public class AppendRequest extends RequestBase {
     private void showError(String error){
         if(mCB != null){
             if(error != null){
-                mCB.onError("AppConfigRequest onCancelled." + error);
+                if(error.contains("UserRecoverableAuthIOException")){
+                    UserRecoverableAuthIOException e = (UserRecoverableAuthIOException) mLastError;
+                    mCB.onUserRecoverableAuthIOException(e);
+                }
+                else{
+                    mCB.onError("AppendRequest onCancelled." + error);
+                }
             }
             else{
-                mCB.onError("AppConfigRequest onCancelled.");
+                mCB.onError("AppendRequest onCancelled.");
             }
         }
     }
