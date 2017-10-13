@@ -35,7 +35,7 @@ public abstract class BaseSDKActivity extends AppCompatActivity implements Googl
     private final static int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     private final static int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
 
-    private boolean mCheckedRootFolder;
+    private boolean mFinishedConfig = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public abstract class BaseSDKActivity extends AppCompatActivity implements Googl
                 Toast.makeText(this, "Device is offline", Toast.LENGTH_SHORT).show();
                 break;
             case SUCCESS:
-                Toast.makeText(this, "Init SDK Success", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Init SDK Success", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -109,13 +109,17 @@ public abstract class BaseSDKActivity extends AppCompatActivity implements Googl
 
     @Override
     public void onConnected() {
-        if(!mCheckedRootFolder && "".equalsIgnoreCase(PrefUtils.getRootFolderID(this))){
-            Toast.makeText(this, getString(R.string.app_root_folder_hint), Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
-            startActivity(i);
-        }
-        else{
-            mCheckedRootFolder = true;
+        if(!mFinishedConfig){
+            if("".equalsIgnoreCase(PrefUtils.getRootFolderID(this))
+                    || "".equalsIgnoreCase(PrefUtils.getAppConfigResourceId(this))){
+                Toast.makeText(this, getString(R.string.finish_app_config), Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(i);
+            }
+            else{
+                mFinishedConfig = true;
+                onFinishedConfiguration();
+            }
         }
     }
 
@@ -198,4 +202,10 @@ public abstract class BaseSDKActivity extends AppCompatActivity implements Googl
         chooseAccount();
 //        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
+
+    protected boolean isFinishedConfig(){
+        return mFinishedConfig;
+    }
+
+    protected abstract void onFinishedConfiguration();
 }

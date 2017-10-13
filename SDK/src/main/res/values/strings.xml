@@ -9,6 +9,9 @@
     <string name="app_config_file_hint">Please choose an app config file</string>
 
 
+    <string name="update">Update</string>
     <string name="save">Save</string>
     <string name="select">Select</string>
+
+    <string name="finish_app_config">Please finish application configuration first.</string>
 </resources>

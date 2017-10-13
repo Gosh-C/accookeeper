@@ -12,11 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import gosh.com.accookeepersdk.AccookeeperSDK;
-import gosh.com.accookeepersdk.MakeRequestTask;
 import gosh.com.accookeepersdk.activity.SettingsActivity;
 import gosh.com.accookeepersdk.googledrive.GoogleDriveAPI;
+import gosh.com.accookeepersdk.request.AppConfigRequest;
+import gosh.com.accookeepersdk.request.RequestCallback;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -56,17 +58,30 @@ public class MainActivity extends AppCompatActivity{
         }
         else if(id == R.id.action_sheet){
             //startActivity(new Intent(this, SheetActivity.class));
-            MakeRequestTask task = new MakeRequestTask(AccookeeperSDK.getInstance().getGoogleAccountCredential(this), this, new MakeRequestTask.ABC() {
+            AppConfigRequest request = new AppConfigRequest(AccookeeperSDK.getInstance().getGoogleAccountCredential(this), this, new RequestCallback() {
                 @Override
-                public void onFinish(String msg) {
+                public void onFinishedFetchData(String data) {
                     Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment);
                     if(f instanceof  MainActivityFragment){
                         MainActivityFragment mf = (MainActivityFragment) f;
-                        mf.setMessage(msg);
+                        mf.setMessage(data);
                     }
                 }
+
+                @Override
+                public void onError(String error) {
+                    Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
+                }
             });
-            task.execute();
+            request.execute();
+
+//            MakeRequestTask task = new MakeRequestTask(AccookeeperSDK.getInstance().getGoogleAccountCredential(this), this, new MakeRequestTask.ABC() {
+//                @Override
+//                public void onFinish(String msg) {
+//
+//                }
+//            });
+//            task.execute();
             return true;
         }
         return super.onOptionsItemSelected(item);

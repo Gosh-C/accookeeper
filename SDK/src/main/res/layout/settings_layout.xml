@@ -6,14 +6,20 @@
     android:layout_height="match_parent"
     tools:context="gosh.com.accookeepersdk.activity.SettingsActivity">
 
-
+    <Button
+        android:id="@+id/update"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/update"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/save"
+        android:layout_above="@+id/update"
         android:layout_alignParentTop="true"
         android:padding="10dp"
         tools:context="gosh.com.accookeepersdk.activity.SettingsActivity">
@@ -64,7 +70,7 @@
                 android:hint="@string/app_config_file_hint"
                 android:enabled="false"
                 android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/select_root"
+                android:layout_toStartOf="@+id/select_config"
                 android:textSize="14sp"/>
 
             <Button
