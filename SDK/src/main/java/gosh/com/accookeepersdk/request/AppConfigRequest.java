@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import gosh.com.accookeepersdk.AppConfig;
+import gosh.com.accookeepersdk.SheetsConfig;
 import gosh.com.accookeepersdk.utils.PrefUtils;
 
 /**
@@ -37,7 +37,7 @@ public class AppConfigRequest extends RequestBase {
      * @throws IOException
      */
     private String getDataFromApi() throws IOException, JSONException {
-        String spreadSheetId = PrefUtils.getAppConfigResourceId(mContext);
+        String spreadSheetId = PrefUtils.getSheetConfigResourceId(mContext);
         List<String> titles = getAllSheetsTitle(spreadSheetId);
         HashMap<String, LinkedList<LinkedHashMap<String, String>>> sheetsConfig = new HashMap<>();
 
@@ -64,7 +64,7 @@ public class AppConfigRequest extends RequestBase {
                 }
             }
         }
-        return AppConfig.toJsonString(sheetsConfig);
+        return SheetsConfig.toJsonString(sheetsConfig);
     }
 
     @Override

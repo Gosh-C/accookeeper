@@ -19,9 +19,9 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecovera
 import gosh.com.accookeepersdk.AccookeeperSDK;
 import gosh.com.accookeepersdk.activity.SettingsActivity;
 import gosh.com.accookeepersdk.googledrive.GoogleDriveAPI;
-import gosh.com.accookeepersdk.request.AppConfigRequest;
 import gosh.com.accookeepersdk.request.AppendRequest;
 import gosh.com.accookeepersdk.request.RequestCallback;
+import gosh.com.accookeepersdk.utils.PrefUtils;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -61,28 +61,12 @@ public class MainActivity extends AppCompatActivity{
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             case R.id.action_sheet:
-                //startActivity(new Intent(this, SheetActivity.class));
-                AppConfigRequest request = new AppConfigRequest(AccookeeperSDK.getInstance().getGoogleAccountCredential(this), this, new RequestCallback() {
-                    @Override
-                    public void onFinishedFetchData(String data) {
-                        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment);
-                        if(f instanceof  MainActivityFragment){
-                            MainActivityFragment mf = (MainActivityFragment) f;
-                            mf.setMessage(data);
-                        }
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onUserRecoverableAuthIOException(UserRecoverableAuthIOException e) {
-                        startActivityForResult(e.getIntent(), REQUEST_CODE_AUTHORIZATION);
-                    }
-                });
-                request.execute();
+                String data = PrefUtils.getSheetConfigJson(this);
+                Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment);
+                if(f instanceof  MainActivityFragment){
+                    MainActivityFragment mf = (MainActivityFragment) f;
+                    mf.setMessage(data);
+                }
                 return true;
             case R.id.action_append:
                 AppendRequest apRequest = new AppendRequest(AccookeeperSDK.getInstance().getGoogleAccountCredential(this), this, new RequestCallback() {

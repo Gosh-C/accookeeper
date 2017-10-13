@@ -5,7 +5,8 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import static gosh.com.accookeepersdk.AppConstants.DRIVE_PREF;
-import static gosh.com.accookeepersdk.AppConstants.PREF_APP_CONFIG_RES_ID;
+import static gosh.com.accookeepersdk.AppConstants.PREF_SHEET_CONFIG_JSON;
+import static gosh.com.accookeepersdk.AppConstants.PREF_SHEET_CONFIG_RES_ID;
 import static gosh.com.accookeepersdk.AppConstants.PREF_CRED_ACC_NAME;
 import static gosh.com.accookeepersdk.AppConstants.PREF_ROOT_FOLER;
 
@@ -32,15 +33,21 @@ public class PrefUtils {
         return getString(context, PREF_CRED_ACC_NAME, null);
     }
 
-    public static void putAppConfigResourceId(Context context, String resourceId){
-        putString(context, PREF_APP_CONFIG_RES_ID, resourceId);
+    public static void putSheetConfigResourceId(Context context, String resourceId){
+        putString(context, PREF_SHEET_CONFIG_RES_ID, resourceId);
     }
 
-    public static String getAppConfigResourceId(Context context){
-        return getString(context, PREF_APP_CONFIG_RES_ID, "");
+    public static String getSheetConfigResourceId(Context context){
+        return getString(context, PREF_SHEET_CONFIG_RES_ID, "");
     }
 
+    public static void putSheetConfigJson(Context context, String json){
+        putString(context, PREF_SHEET_CONFIG_JSON, json);
+    }
 
+    public static String getSheetConfigJson(Context context){
+        return getString(context, PREF_SHEET_CONFIG_JSON, "");
+    }
 
     private static void putString(Context context, String key, String value){
         try{

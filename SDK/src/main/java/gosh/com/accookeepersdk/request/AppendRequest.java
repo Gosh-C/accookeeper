@@ -37,7 +37,7 @@ public class AppendRequest extends RequestBase {
     @Override
     protected String doInBackground(Void... params) {
         try {
-            String spreadSheetId = PrefUtils.getAppConfigResourceId(mContext);
+            String spreadSheetId = PrefUtils.getSheetConfigResourceId(mContext);
             List obj = new ArrayList<Object>();
             obj.add("A");
             obj.add("B");

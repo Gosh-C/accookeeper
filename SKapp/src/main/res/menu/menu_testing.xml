@@ -11,7 +11,7 @@
     <item
         android:id="@+id/action_sheet"
         android:orderInCategory="100"
-        android:title="Sheeet API"
+        android:title="SHOW SHEET CONFIG"
         app:showAsAction="never" />
 
     <item

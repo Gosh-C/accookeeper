@@ -7,15 +7,30 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Created by goshchan on 9/10/2017.
  */
 
-public class AppConfig {
+public class SheetsConfig {
+    private static String sJsonConfig;
+    private static List<String> sSheetsName;
 
-    public AppConfig(){}
+    public static List<String> getSheetName(){
+        if(sSheetsName == null){
+
+        }
+        return sSheetsName;
+    }
+
+    private void createSheetsName() throws JSONException{
+        if(sJsonConfig == null){
+
+        }
+        JSONObject o = new JSONObject(sJsonConfig);
+    }
 
     public static String toJsonString(HashMap<String, LinkedList<LinkedHashMap<String, String>>> sheetsConfig) throws JSONException{
         Set<String> keys = sheetsConfig.keySet();

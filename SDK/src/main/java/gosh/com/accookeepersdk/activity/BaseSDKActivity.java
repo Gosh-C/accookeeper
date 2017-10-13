@@ -111,7 +111,7 @@ public abstract class BaseSDKActivity extends AppCompatActivity implements Googl
     public void onConnected() {
         if(!mFinishedConfig){
             if("".equalsIgnoreCase(PrefUtils.getRootFolderID(this))
-                    || "".equalsIgnoreCase(PrefUtils.getAppConfigResourceId(this))){
+                    || "".equalsIgnoreCase(PrefUtils.getSheetConfigResourceId(this))){
                 Toast.makeText(this, getString(R.string.finish_app_config), Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(i);
